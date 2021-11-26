@@ -12,22 +12,23 @@
 			</div>
 
 			<div class="weather-container">
-				<i class="weather-icon far fa-sun" />
+				<i class="weather-icon">
+					{{weather.icon}}
+				</i>
 				<h1 class="weather-temp">{{ Math.round(weather.main.temp) }}°C</h1>
-				<h3 class="weather-desc">{{ weather.weather[0].main }}</h3>
+				<h3 class="weather-desc">{{ weather.weather[0].description }}</h3>
 			</div>
 		</div>
 
 		<div class="info-side">
 			<div class="today-info-container">
-				<img class="info-logo" src="@/assets/logo.png" alt="VueLogo" />
 				<div class="today-info">
 					<div class="humidity">
-						<span class="title">HUMIDITY</span><span class="value">{{ weather.main.humidity }} %</span>
+						<span class="title">Влажность</span><span class="value">{{ weather.main.humidity }} %</span>
 						<div class="clear"></div>
 					</div>
 					<div class="wind">
-						<span class="title">WIND</span><span class="value">{{ weather.wind.speed }} km/h</span>
+						<span class="title">Ветер</span><span class="value">{{ weather.wind.speed }} km/h</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -35,9 +36,9 @@
 
 			<div class="location-container">
 				<form @submit.prevent="fetchWeather()" accept-charset="utf-8">
-					<input class="location-input" type="text" v-model="query" placholder="Enter your location" />
+					<input class="location-input" type="text" v-model="query" placholder="Введите своё местоположение" />
 					<button type="submit" class="location-button">
-						<i class="location-icon fas fa-map-marker-alt"></i> <span>Change location</span>
+						<i class="location-icon fas fa-map-marker-alt"></i> <span>Сменить местоположение</span>
 					</button>
 				</form>
 			</div>
@@ -45,7 +46,7 @@
 
 		<div v-if="bookmarks.length" class="bookmarks">
 			<div class="bookmarks-button"><span /></div>
-			<h3>Bookmarks:</h3>
+			<h3>Заметки:</h3>
 			<ul class="bookmarks-list">
 				<li
 					@click="
@@ -70,14 +71,14 @@ export default {
 	data: () => ({
 		api_url: "https://api.openweathermap.org/data/2.5/",
 		api_key: "814ca0274a5978ef78c6b9b44ff87547",
-		query: "Moscow",
+		query: "Москва",
 		weather: {},
 		bookmarks: [],
 	}),
 	methods: {
 		fetchWeather() {
 			axios
-				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}`)
+				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru`)
 				.then((response) => (this.weather = response.data))
 				.catch((error) => console.log(error));
 		},
@@ -93,21 +94,21 @@ export default {
 		getDate: function () {
 			const d = new Date();
 			const monthNames = [
-				"January",
-				"February",
-				"March",
-				"April",
-				"May",
-				"June",
-				"July",
-				"August",
-				"September",
-				"October",
-				"November",
-				"December",
+				"Январь",
+				"Февраль",
+				"Март",
+				"Апрель",
+				"Май",
+				"Июнь",
+				"Июль",
+				"Август",
+				"Сентябрь",
+				"Октябрь",
+				"Ноябрь",
+				"Декабрь",
 			];
-			const month = d.getMonth() + 1;
-			const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][d.getDay()];
+			const month = d.getMonth();
+			const weekday = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"][d.getDay()];
 			const date = `${d.getDate()}, ${monthNames[month]} ${d.getFullYear()}`;
 			return { date, weekday };
 		},
