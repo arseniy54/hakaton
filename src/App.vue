@@ -60,6 +60,29 @@
 				</li>
 			</ul>
 		</div>
+		<div>
+			<div>
+				<table>
+					<tr>
+						<td>
+							<h5 class="days">{{ getDate.day_1 }}</h5>
+						</td>
+						<td>
+							<h5 class="days">{{ getDate.day_2 }}</h5>
+						</td>
+						<td>
+							<h5 class="days">{{ getDate.day_3 }}</h5>
+						</td>
+						<td>
+							<h5 class="days">{{ getDate.day_4 }}</h5>
+						</td>
+						<td>
+							<h5 class="days">{{ getDate.day_5 }}</h5>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -108,9 +131,14 @@ export default {
 				"Декабрь",
 			];
 			const month = d.getMonth();
+			const day_1 = `${d.getDate() +1}, ${monthNames[month]} ${d.getFullYear()}`;
+			const day_2 = `${d.getDate() +2}, ${monthNames[month]} ${d.getFullYear()}`;
+			const day_3 = `${d.getDate() +3}, ${monthNames[month]} ${d.getFullYear()}`;
+			const day_4 = `${d.getDate() +4}, ${monthNames[month]} ${d.getFullYear()}`;
+			const day_5 = `${d.getDate() +5}, ${monthNames[month]} ${d.getFullYear()}`;
 			const weekday = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"][d.getDay()];
 			const date = `${d.getDate()}, ${monthNames[month]} ${d.getFullYear()}`;
-			return { date, weekday };
+			return { date, weekday, day_1,day_2, day_3, day_4, day_5  };
 		},
 	},
 	mounted() {
@@ -128,7 +156,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap");
 
 :root {
-	--gradient: linear-gradient(135deg, #72edf2 10%, #5151e5 100%);
+	--gradient: linear-gradient(135deg, #99ff99 10%, #2fd829 90%);
 }
 
 * {
@@ -204,6 +232,12 @@ body {
 .date-day {
 	display: block;
 }
+.days{
+	display: block;
+	padding: 25px;
+	background:linear-gradient(135deg, #99ff99 10%, #2fd829 90%);
+	border-radius: 25px;
+}
 
 .location {
 	display: inline-block;
@@ -254,7 +288,6 @@ body {
 .today-info {
 	padding: 15px;
 	margin: 0 25px 25px 25px;
-	/* 	box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.25); */
 	border-radius: 10px;
 }
 
@@ -351,12 +384,12 @@ body {
 	color: #ffffff;
 	background: none;
 	font-weight: 700;
-	border: 2px solid rgba(#72edf2, 0.5);
+	border: 2px solid rgba(#99ff99, 0.5);
 	margin-bottom: 15px;
 }
 
 .location-input:focus {
-	border-color: rgba(#72edf2, 0.8);
+	border-color: rgba(#99ff99, 0.8);
 }
 
 .location-button:hover {
