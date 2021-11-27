@@ -71,7 +71,7 @@
 							<h5 class="days">{{ getDate.day_1 }}</h5>
 						</td>
 						<td>
-							<h5 class="days">{{ getDate.day_2 }}</h5>
+							<h5 class="days">{{day_2()}}{{ getDate.day_2 }}</h5>
 						</td>
 						<td>
 							<h5 class="days">{{ getDate.day_3 }}</h5>
@@ -105,7 +105,7 @@ export default {
 	methods: {
 		fetchWeather() {
 			axios
-				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru&cnt=3`)
+				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru&cnt=1`)
 				.then((response) => (this.weather = response.data))
 				.catch((error) => console.log(error));
 		},
@@ -148,6 +148,12 @@ export default {
 	mounted() {
 		this.fetchWeather();
 	},
+	day_2(){
+			axios
+				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru&cnt=2`)
+				.then((response) => (this.weather = response.data))
+				.catch((error) => console.log(error));
+	}
 };
 </script>
 
