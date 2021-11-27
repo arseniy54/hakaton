@@ -1,4 +1,5 @@
 <template>
+<div>
 	<div class="container" v-if="typeof weather.main != 'undefined'">
 		<div class="weather-side">
 			<div class="weather-gradient"></div>
@@ -10,11 +11,12 @@
 					{{ weather.name }}, {{ weather.sys.country }}
 				</span>
 			</div>
+			
 
 			<div class="weather-container">
-				<i class="weather-icon">
-					{{weather.icon}}
-				</i>
+				<h1 class="weather-icon">
+				{{dt_txt}}
+				</h1>
 				<h1 class="weather-temp">{{ Math.round(weather.main.temp) }}°C</h1>
 				<h3 class="weather-desc">{{ weather.weather[0].description }}</h3>
 			</div>
@@ -33,6 +35,7 @@
 					</div>
 				</div>
 			</div>
+			
 
 			<div class="location-container">
 				<form @submit.prevent="fetchWeather()" accept-charset="utf-8">
@@ -43,7 +46,7 @@
 				</form>
 			</div>
 		</div>
-
+		
 		<div v-if="bookmarks.length" class="bookmarks">
 			<div class="bookmarks-button"><span /></div>
 			<h3>Заметки:</h3>
@@ -84,6 +87,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -93,7 +97,7 @@ export default {
 	name: "App",
 	data: () => ({
 		api_url: "https://api.openweathermap.org/data/2.5/",
-		api_key: "814ca0274a5978ef78c6b9b44ff87547",
+		api_key: "f423841ca31681353258a0e7361398c3",
 		query: "Москва",
 		weather: {},
 		bookmarks: [],
@@ -101,7 +105,7 @@ export default {
 	methods: {
 		fetchWeather() {
 			axios
-				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru`)
+				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru&cnt=3`)
 				.then((response) => (this.weather = response.data))
 				.catch((error) => console.log(error));
 		},
@@ -206,6 +210,7 @@ body {
 	float: left;
 	-webkit-transform: scale(1.1) perspective(1500px) rotateY(10deg);
 	transform: scale(1.1) perspective(1500px) rotateY(10deg);
+	z-index: 2;
 }
 
 .weather-gradient {
@@ -237,6 +242,7 @@ body {
 	padding: 25px;
 	background:linear-gradient(135deg, #99ff99 10%, #2fd829 90%);
 	border-radius: 25px;
+	top: 25px;
 }
 
 .location {
@@ -275,7 +281,6 @@ body {
 	float: left;
 	height: 100%;
 	padding-top: 25px;
-	min-width: 330px;
 }
 
 .info-logo {
