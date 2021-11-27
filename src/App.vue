@@ -3,9 +3,9 @@
 	<div class="container" v-if="typeof weather.main != 'undefined'">
 		<div class="weather-side">
 			<div class="weather-gradient"></div>
+			{{weather.list}}
 			<div class="date-container">
-				<h2 class="date-dayname">{{ getDate.weekday }}</h2>
-				<span class="date-day">{{ getDate.date }}</span>
+				<h2 class="date-day">{{ getDate.date }}</h2>
 				<span class="location">
 					<span class="bookmark-add" @click="addToBookmarks()" title="add to bookmark"><i class="fas fa-bookmark" /></span>
 					{{ weather.name }}, {{ weather.sys.country }}
@@ -29,6 +29,7 @@
 						<span class="title">Влажность</span><span class="value">{{ weather.main.humidity }} %</span>
 						<div class="clear"></div>
 					</div>
+					
 					<div class="wind">
 						<span class="title">Ветер</span><span class="value">{{ weather.wind.speed }} km/h</span>
 						<div class="clear"></div>
@@ -68,19 +69,19 @@
 				<table>
 					<tr>
 						<td>
-							<h5 class="days">{{ getDate.day_1 }}</h5>
+							<h5  @click="setDay(1)" class="days" >{{ getDate.day_1 }}</h5>
 						</td>
 						<td>
-							<h5 class="days">{{day_2()}}{{ getDate.day_2 }}</h5>
+							<h5 @click="setDay(2)" class="days">{{ getDate.day_2 }}</h5>
 						</td>
 						<td>
-							<h5 class="days">{{ getDate.day_3 }}</h5>
+							<h5  @click="setDay(3)" class="days">{{ getDate.day_3 }}</h5>
 						</td>
 						<td>
-							<h5 class="days">{{ getDate.day_4 }}</h5>
+							<h5  @click="setDay(4)" class="days">{{ getDate.day_4 }}</h5>
 						</td>
 						<td>
-							<h5 class="days">{{ getDate.day_5 }}</h5>
+							<h5  @click="setDay(5)" class="days">{{ getDate.day_5 }}</h5>
 						</td>
 					</tr>
 				</table>
@@ -101,14 +102,28 @@ export default {
 		query: "Москва",
 		weather: {},
 		bookmarks: [],
+		day: 1,
+		d: '',
+		monthNames:'',
+		getFullYear: '',
+		data: '',
+		month: '',
 	}),
 	methods: {
-		fetchWeather() {
+		setDay(day) {
+			//this.weekday[d.getDay() + 1]
+
+			this.day = day;
+			this.getDate.data = `${this.d.getDate() + this.day}, ${this.monthNames[this.month]} ${this.d.getFullYear()}`;
+			
 			axios
-				.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru&cnt=1`)
-				.then((response) => (this.weather = response.data))
-				.catch((error) => console.log(error));
+			.get(`${this.api_url}weather?q=${this.query}&units=metric&appid=${this.api_key}&lang=ru&cnt=${this.day}`)
+			.then((response) => (this.weather = response.data))
+			.catch((error) => console.log(error));
+
+		
 		},
+	
 		addToBookmarks() {
 			console.log(this.bookmarks.indexOf(this.query));
 			if (this.bookmarks.indexOf(this.query) !== -1) {
@@ -120,6 +135,7 @@ export default {
 	computed: {
 		getDate: function () {
 			const d = new Date();
+			this.d = d;
 			const monthNames = [
 				"Январь",
 				"Февраль",
@@ -134,6 +150,7 @@ export default {
 				"Ноябрь",
 				"Декабрь",
 			];
+			this.monthNames = monthNames;
 			const month = d.getMonth();
 			const day_1 = `${d.getDate() +1}, ${monthNames[month]} ${d.getFullYear()}`;
 			const day_2 = `${d.getDate() +2}, ${monthNames[month]} ${d.getFullYear()}`;
@@ -141,12 +158,15 @@ export default {
 			const day_4 = `${d.getDate() +4}, ${monthNames[month]} ${d.getFullYear()}`;
 			const day_5 = `${d.getDate() +5}, ${monthNames[month]} ${d.getFullYear()}`;
 			const weekday = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"][d.getDay()];
+			console.log(d.getDay());
 			const date = `${d.getDate()}, ${monthNames[month]} ${d.getFullYear()}`;
+			this.getFullYear = this.getFullYear;
+			this.month = month;
 			return { date, weekday, day_1,day_2, day_3, day_4, day_5  };
 		},
 	},
 	mounted() {
-		this.fetchWeather();
+		this.setDay(1)
 	},
 	day_2(){
 			axios
